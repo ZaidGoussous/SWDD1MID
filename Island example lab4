@@ -1,0 +1,180 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Prog1_04_01_Islands
+{
+    class Program
+    {
+    
+    static Random R = new Random();
+        static int[] GenerateArray(int n)
+        {
+            int[] arr = new int[n];
+
+            for (int i = 0; i < n; i++)
+            {
+                int vel = R.Next(0, 100);
+                if (vel < 40)
+                {
+                    arr[i] = R.Next(1, 11);
+                }
+                else
+                {
+                    arr[i] = 0;
+                } //IF
+            } //FOR I
+            return arr;
+        }
+        static int GetMax(int[] t)
+        {
+            int max = 0;
+            for (int i = 1; i < t.Length; i++)
+            {
+                if (t[i] > t[max]) max = i;
+            }
+            return max;
+        }
+
+	
+        static int GetNum(int[] t, int value)
+        {
+            int num = 0;
+            for (int i = 0; i < t.Length; i++)
+            {
+                if (t[i] == value) num++;
+            }
+            return num;
+        }
+
+        static int GetMaxNum(int[] t)
+        {
+            int db = 1;
+            int max = 0;
+            for (int i = 1; i < t.Length; i++)
+            {
+                if (t[i] == t[max]) db++;
+                else if (t[i] > t[max])
+                {
+                    db = 1;
+                    max = i;
+                }
+            }
+            return db;
+        }
+
+		
+        static int GetLongest(int[] t)
+        {
+            int actLen = 0;
+            int maxLen = 0;
+            for (int i = 0; i < t.Length; i++)
+            {
+                if (t[i] > 0)
+                {
+                    actLen++;
+                }
+                else
+                {
+                    if (actLen > 0)
+                    {
+                        if (actLen > maxLen) maxLen = actLen;
+                        actLen = 0;
+                    } //IF 2
+                } //IF 1
+            } // FOR
+            if (actLen > maxLen) maxLen = actLen;
+            return maxLen;
+        }
+        static bool FirstMaxOnLongest(int[] t, int max, int longest)
+        {
+            bool islandFound = false;
+            int actLen = 0;
+            for (int i = 0; i < t.Length && !islandFound; i++)
+            {
+                if (t[i] > 0)
+                {
+                    actLen++;
+                }
+                else
+                {
+                    if (actLen > 0)
+                    {
+                        if (actLen == longest && !islandFound &&
+                            max >= i - actLen && max < i)
+                        {
+                            islandFound = true;
+                        }
+                        actLen = 0;
+                    } 
+                } 
+            } 
+            if (actLen == longest && max >= t.Length - actLen && max < t.Length)
+            {
+                islandFound = true;
+            }
+            return islandFound;
+        }
+
+		
+        static bool FirstMaxOnLongest_better(int[] t, int max, int longest)
+        {
+            int actLen = 0;
+            for (int i = 0; i < t.Length; i++)
+            {
+                if (t[i] > 0)
+                {
+                    actLen++;
+                }
+                else
+                {
+                    if (actLen > 0)
+                    {
+                        if (actLen == longest && max >= i - actLen && max < i)
+                        {
+                            return true;
+                        }
+                        actLen = 0;
+                    } 
+                } 
+            } 
+            if (actLen == longest && max >= t.Length - actLen && max < t.Length)
+            {
+                return true;
+            }
+            return false;
+        }
+		
+		
+        static void Main(string[] args)
+        {
+            int n;
+            do
+            {
+                Console.Write("Number of measurements? ");
+                n = int.Parse(Console.ReadLine());
+            } while (n < 10);
+
+            int[] array = GenerateArray(n);
+            foreach (int x in array) Console.Write(x + " ");
+            Console.WriteLine();
+
+            int max = GetMax(array);
+            Console.WriteLine("Maximum index: " + max + ", value: " + array[max]);
+            Console.WriteLine("Maximum occurances: " + GetNum(array, array[max]));
+            Console.WriteLine("Maximum occurances2: " + GetMaxNum(array));
+            int longest = GetLongest(array);
+            Console.WriteLine("Longest island: " + longest);
+            Console.WriteLine("First max peak on longest island: " +
+                FirstMaxOnLongest(array, max, longest));
+            Console.WriteLine("First max peak on longest island (2): " +
+                FirstMaxOnLongest_better(array, max, longest));
+            Console.ReadLine();
+
+
+        }
+    }
+
+}
