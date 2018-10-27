@@ -1,0 +1,79 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApplication1
+{
+    class Program
+    {
+
+        static Random rand = new Random();
+
+        
+        static string createNeptunCode() {
+            string neptunCode = "";
+            Console.WriteLine(neptunCode.Length);
+            for (int i = 0; i < 6; i++) // randomize 6 times
+            {
+                if (rand.Next(0, 2) == 1) // 50% letter
+                {
+                    char c = (char)rand.Next('A', 'Z');
+                    neptunCode += c.ToString();
+                }
+                else // 50% number
+                {
+                    int number = rand.Next(0, 10);
+                    neptunCode += number.ToString();
+                }
+
+            }
+            return neptunCode;
+        }
+
+        static int countLenght(string stringToCount) {
+            int counter = 0;
+            for (int i = 0; i < stringToCount.Length; i++)
+            {
+                if ( char.IsLetter(stringToCount[i]) )
+                {
+                    counter++;
+                }
+            }
+            return counter;
+        }
+
+       
+        static int CountVowels(string stringWithVowels)
+        {
+            int counter = 0;
+            for (int i = 0; i < stringWithVowels.Length; i++)
+            {
+                if(stringWithVowels[i] == 'A' ||
+                    stringWithVowels[i] == 'E' ||
+                    stringWithVowels[i] == 'I' ||
+                    stringWithVowels[i] == 'U' ||
+                    stringWithVowels[i] == 'O') {
+                    counter++;
+                }
+            }
+            return counter;
+        }
+
+        static void Main(string[] args)
+        {
+
+            string neptunCode = createNeptunCode();
+            Console.WriteLine("Neptun Code: " + neptunCode);
+
+            int numberOfLetters = countLenght(neptunCode);
+            Console.WriteLine("Number of letters: " + numberOfLetters);
+
+            CountVowels(neptunCode); 
+            int numberOfVowels = CountVowels(neptunCode);
+            int numberOfVowels2 = CountVowels("COUNTMEIN"); 
+            Console.WriteLine("Number of Vowels 1: " + numberOfVowels);
+            Console.WriteLine("Number of Vowels 2: " + numberOfVowels2);
+
+            Console.ReadKey();
